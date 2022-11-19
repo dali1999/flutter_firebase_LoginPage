@@ -1,5 +1,7 @@
+import 'package:candid/data/join_or_login.dart';
 import 'package:candid/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const MyApp()); // start app
 
@@ -9,7 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Authpage(),
+      home: ChangeNotifierProvider<JoinOrLogin>.value(
+          value: JoinOrLogin(),
+          child: Authpage()),
     );
   }
 }

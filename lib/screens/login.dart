@@ -1,5 +1,7 @@
+import 'package:candid/data/join_or_login.dart';
 import 'package:candid/helper/login_background.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Authpage extends StatelessWidget {
   // const Authpage({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class Authpage extends StatelessWidget {
       children: <Widget>[
         CustomPaint(
           size: size,
-          painter: LoginBackground(),
+          painter: LoginBackground(isJoin: Provider.of<JoinOrLogin>(context).isJoin),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +31,12 @@ class Authpage extends StatelessWidget {
             Container(
               height: size.height * 0.1,
             ),
-            Text("Don't Have an Account? Create One"),
+            GestureDetector(
+                onTap: (){
+                  JoinOrLogin joinOrLogin = Provider.of<JoinOrLogin>(context);
+                  joinOrLogin.toggle();
+                },
+                child: Text("Don't Have an Account? Create One")),
             Container(
               height: size.height * 0.05,
             )
@@ -64,7 +71,7 @@ class Authpage extends StatelessWidget {
             onPressed: () {
               print(_emailController.text.toString());
               print(_passwordController.text.toString());
-              if(_formkey.currentState!.validate()){
+              if (_formkey.currentState!.validate()) {
                 print(_emailController.value.toString());
               }
             },
@@ -72,7 +79,10 @@ class Authpage extends StatelessWidget {
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25))),
-            child: Text("Login", style: TextStyle(fontSize: 20, color: Colors.white),)),
+            child: Text(
+              "Login",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            )),
       ),
     );
   }
@@ -95,11 +105,11 @@ class Authpage extends StatelessWidget {
                     controller: _emailController,
                     decoration: InputDecoration(
                         icon: Icon(Icons.account_circle), labelText: "Email"),
-                    validator: (String? value){
-                        if(value==null){
-                          return "Please input correct Email";
-                        }
-                        return null;
+                    validator: (String? value) {
+                      if (value == null) {
+                        return "Please input correct Email";
+                      }
+                      return null;
                     },
                   ),
                   TextFormField(
@@ -107,11 +117,11 @@ class Authpage extends StatelessWidget {
                     controller: _passwordController,
                     decoration: InputDecoration(
                         icon: Icon(Icons.vpn_key), labelText: "Password"),
-                    validator: (String? value){
-                        if(value==null){
-                          return "Please input correct Password";
-                        }
-                        return null;
+                    validator: (String? value) {
+                      if (value == null) {
+                        return "Please input correct Password";
+                      }
+                      return null;
                     },
                   ),
                   Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class JoinOrLogin extends ChangeNotifier{
-   bool _isJoin = false; //기본값은 join 이 아니라 login
+   bool _isJoin = true; //기본값은 join 이 아니라 login
 
    bool get isJoin => _isJoin;
 
