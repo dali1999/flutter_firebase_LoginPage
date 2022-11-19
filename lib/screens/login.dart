@@ -18,7 +18,8 @@ class Authpage extends StatelessWidget {
       children: <Widget>[
         CustomPaint(
           size: size,
-          painter: LoginBackground(isJoin: Provider.of<JoinOrLogin>(context).isJoin),
+          painter:
+              LoginBackground(isJoin: Provider.of<JoinOrLogin>(context).isJoin),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,12 +32,19 @@ class Authpage extends StatelessWidget {
             Container(
               height: size.height * 0.1,
             ),
-            GestureDetector(
-                onTap: (){
-                  JoinOrLogin joinOrLogin = Provider.of<JoinOrLogin>(context);
-                  joinOrLogin.toggle();
-                },
-                child: Text("Don't Have an Account? Create One")),
+            Consumer<JoinOrLogin>(
+              builder: (context, joinOrLogin, child) => GestureDetector(
+                  onTap: () {
+                    joinOrLogin.toggle();
+                  },
+                  child: Text(
+                    joinOrLogin.isJoin
+                        ? "Alreadt Have an Account? Sign in"
+                        : "Don't have an Account? Create One",
+                    style: TextStyle(
+                        color: joinOrLogin.isJoin ? Colors.red : Colors.blue),
+                  )),
+            ),
             Container(
               height: size.height * 0.05,
             )
@@ -53,7 +61,7 @@ class Authpage extends StatelessWidget {
         child: FittedBox(
           fit: BoxFit.contain,
           child: CircleAvatar(
-            backgroundImage: NetworkImage("https://picsum.photos/250/250"),
+            backgroundImage: AssetImage("loginGIF.webp"),
           ),
         ),
       ),
@@ -67,22 +75,25 @@ class Authpage extends StatelessWidget {
       bottom: 0,
       child: SizedBox(
         height: 50,
-        child: ElevatedButton(
-            onPressed: () {
-              print(_emailController.text.toString());
-              print(_passwordController.text.toString());
-              if (_formkey.currentState!.validate()) {
-                print(_emailController.value.toString());
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25))),
-            child: Text(
-              "Login",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            )),
+        child: Consumer<JoinOrLogin>(
+          builder: (context, joinOrLogin, child) => ElevatedButton(
+              onPressed: () {
+                print(_emailController.text.toString());
+                print(_passwordController.text.toString());
+                if (_formkey.currentState!.validate()) {
+                  print(_emailController.value.toString());
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  joinOrLogin.isJoin?Colors.red:Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25))),
+              child: Text(
+                joinOrLogin.isJoin?"Join":"Login",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              )),
+        ),
       ),
     );
   }
@@ -127,7 +138,11 @@ class Authpage extends StatelessWidget {
                   Container(
                     height: 10,
                   ),
-                  Text("Forgot Password"),
+                  Consumer<JoinOrLogin>(
+                    builder: (context, value, child) => Opacity(
+                        opacity: value.isJoin ? 0 : 1,
+                        child: Text("Forgot Password")),
+                  ),
                 ],
               )),
         ),
