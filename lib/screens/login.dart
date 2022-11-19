@@ -54,6 +54,8 @@ class Authpage extends StatelessWidget {
     ));
   }
 
+
+
   Widget get _logoImage {
     return Expanded(
       child: Padding(
